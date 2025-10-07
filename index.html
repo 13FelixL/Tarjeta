@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Doble Vida — Tarjeta Final</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@500&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at center, #050505 0%, #000 100%);
+      font-family: 'Orbitron', sans-serif;
+      perspective: 1100px;
+      overflow: hidden;
+    }
+
+    .card {
+      width: 380px;
+      height: 250px;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card__inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.9s cubic-bezier(.2, .9, .3, 1);
+      transform-origin: 50% 50%;
+      border-radius: 15px;
+    }
+
+    .card.is-flipped .card__inner {
+      transform: rotateY(180deg);
+    }
+
+    .card__face {
