@@ -1,15 +1,15 @@
 const card = document.getElementById('card');
-const backFace = document.getElementById('backFace');
+const moneyContainer = document.getElementById('moneyRainContainer');
 const soundTech = document.getElementById('sound-tech');
 const soundFiesta = document.getElementById('sound-fiesta');
 
-// === Fondo con código animado ===
+// === Fondo animado del lado programador ===
 const mover = document.getElementById('codeMover');
 const chunkA = document.getElementById('chunkA');
 const chunkB = document.getElementById('chunkB');
 
 const fragment = [
-  'const Felix = {',
+  'const Gloria = {',
   '  profesion: "Programador",',
   '  modo: "Día",',
   '  skills: ["HTML","CSS","JS","Data Analysis"],',
@@ -44,7 +44,7 @@ function tick(ts) {
   const dt = (ts - last) / 1000;
   last = ts;
   y += speed * dt;
-  if (chunkH && y >= chunkH) { y -= chunkH; }
+  if (chunkH && y >= chunkH) y -= chunkH;
   mover.style.transform = `translateY(${-y}px)`;
   requestAnimationFrame(tick);
 }
@@ -53,43 +53,54 @@ requestAnimationFrame(tick);
 card.addEventListener('mouseenter', () => { speed = 45; });
 card.addEventListener('mouseleave', () => { speed = 28; });
 
-// === Partículas en modo noche ===
-function spawnParticle() {
-  const p = document.createElement('div');
-  p.className = 'particle';
-  const colors = ['#fff9', '#ff66cc', '#ffd166', '#66ffea', '#ff55aa'];
-  p.style.background = colors[(Math.random() * colors.length) | 0];
-  const bw = backFace.clientWidth, bh = backFace.clientHeight;
-  const startX = Math.random() * bw;
-  const startY = bh + (Math.random() * 60);
-  p.style.left = startX + 'px';
-  p.style.top = startY + 'px';
-  const size = Math.random() * 10 + 4;
-  p.style.width = size + 'px';
-  p.style.height = size + 'px';
-  backFace.appendChild(p);
-  const duration = 2800 + Math.random() * 2200;
-  const deltaX = (Math.random() - 0.5) * 120;
-  const deltaY = -(200 + Math.random() * 240);
-  const start = performance.now();
+// === Lluvia de dinero (emoji) ===
+let moneyInterval = null;
+const emojis = ['💵', '💰', '🤑', '💸'];
 
-  (function frame(now) {
-    const t = Math.min(1, (now - start) / duration);
-    const ease = 1 - Math.pow(1 - t, 3);
-    p.style.transform = `translate(${deltaX * ease}px, ${deltaY * ease}px) scale(${1 - 0.35 * ease})`;
-    p.style.opacity = `${1 - ease}`;
-    if (t < 1) requestAnimationFrame(frame);
-    else p.remove();
-  })(start);
+function createMoney() {
+  const el = document.createElement('div');
+  el.className = 'money';
+  el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+  const vw = window.innerWidth;
+  const x = Math.random() * vw;
+  const size = 1.2 + Math.random() * 1.8;
+  const duration = 3 + Math.random() * 3;
+  const rotation = Math.random() * 360;
+
+  el.style.left = `${x}px`;
+  el.style.fontSize = `${size}rem`;
+  el.style.animationDuration = `${duration}s`;
+  el.style.transform = `rotate(${rotation}deg)`;
+  moneyContainer.appendChild(el);
+
+  setTimeout(() => el.remove(), duration * 1000);
 }
-setInterval(spawnParticle, 260);
+
+function startMoneyRain() {
+  if (!moneyInterval) {
+    moneyInterval = setInterval(createMoney, 120);
+  }
+}
+
+function stopMoneyRain() {
+  clearInterval(moneyInterval);
+  moneyInterval = null;
+  moneyContainer.innerHTML = '';
+}
 
 // === Volteo con sonido ===
 card.addEventListener('click', () => {
   const flippingToBack = !card.classList.contains('is-flipped');
   try {
-    if (flippingToBack) { soundFiesta.currentTime = 0; soundFiesta.play(); }
-    else { soundTech.currentTime = 0; soundTech.play(); }
-  } catch (e) { }
+    if (flippingToBack) {
+      soundFiesta.currentTime = 0;
+      soundFiesta.play();
+      startMoneyRain();
+    } else {
+      soundTech.currentTime = 0;
+      soundTech.play();
+      stopMoneyRain();
+    }
+  } catch (e) {}
   card.classList.toggle('is-flipped');
 });

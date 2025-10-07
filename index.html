@@ -8,9 +8,9 @@
 </head>
 <body>
   <div class="card" id="card">
-    <div class="card__inner" id="cardInner">
+    <div class="card__inner">
       <!-- LADO PROGRAMADOR -->
-      <div class="card__face front" aria-hidden="false">
+      <div class="card__face front">
         <div class="code-bg" aria-hidden="true">
           <div class="code-mover" id="codeMover">
             <div class="code-chunk" id="chunkA"></div>
@@ -22,13 +22,16 @@
       </div>
 
       <!-- LADO TEIBOLERA -->
-      <div class="card__face back" aria-hidden="true" id="backFace">
+      <div class="card__face back">
         <h1>De noche soy una teibolera 💃</h1>
         <p>Cada movimiento es un algoritmo para el deseo.</p>
       </div>
     </div>
     <div class="card__shadow" aria-hidden="true"></div>
   </div>
+
+  <!-- Lluvia de dinero -->
+  <div id="moneyRainContainer"></div>
 
   <audio id="sound-tech" preload="auto" src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_16f58c42ee.mp3?filename=tech-click-2-103339.mp3"></audio>
   <audio id="sound-fiesta" preload="auto" src="https://cdn.pixabay.com/download/audio/2021/09/13/audio_2d56cdbac5.mp3?filename=party-112370.mp3"></audio>
